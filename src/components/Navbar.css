@@ -1,0 +1,70 @@
+
+.navbar {
+  width: 100%;
+  height: 65px;
+  padding: 0 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #141414;
+  color: #a6aabe;
+  box-sizing: border-box;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  color: #a6aabe;
+}
+
+.nav-icons {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.nav-icons button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: #a6aabe;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.nav-icons button svg {
+  width: 23px;
+  height: 23px;
+  stroke-width: 1.8;
+}
+
+.cart-count {
+  position: absolute;
+  top: -7px;
+  right: -9px;
+  background: #e00000;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.nav-icons button {
+  background: transparent !important;
+  border: none !important;
+}

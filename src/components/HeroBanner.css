@@ -1,0 +1,175 @@
+
+.hero-banner {
+  width: 100%;
+  min-height: 450px;
+  background: #141414;
+  color: #a6aabe;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 8%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Background watermark */
+.hero-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(100px, 17vw, 240px);
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.035);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Main hero content */
+.hero-content {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-text {
+  width: 45%;
+}
+
+.hero-text h2 {
+  font-size: 25px;
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+
+.hero-text h1 {
+  font-size: 38px;
+  max-width: 400px;
+  line-height: 1.2;
+  margin: 0 0 25px;
+  font-weight: 700;
+}
+
+.hero-price {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.hero-price span {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.hero-price del {
+  color: #777;
+  font-size: 16px;
+}
+
+.shop-now {
+  background: #e00000;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 16px;
+}
+
+.shop-now:hover {
+  background: #c00000;
+}
+
+/* Product image */
+.hero-image {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-image img {
+  width: 100%;
+  max-width: 430px;
+  height: 350px;
+  object-fit: contain;
+}
+
+/* Slider navigation */
+.hero-dots {
+  position: absolute;
+  bottom: 25px;
+  display: flex;
+  gap: 8px;
+  z-index: 2;
+}
+
+.hero-dots button {
+  width: 9px;
+  height: 9px;
+  border: none;
+  border-radius: 50%;
+  background: #444;
+  cursor: pointer;
+  padding: 0;
+}
+
+.hero-dots button.active {
+  background: #e00000;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+  .hero-banner {
+    min-height: 400px;
+    padding: 35px 5%;
+  }
+
+  .hero-text h2 {
+    font-size: 19px;
+  }
+
+  .hero-text h1 {
+    font-size: 25px;
+  }
+
+  .hero-image img {
+    height: 230px;
+  }
+
+  .hero-watermark {
+    font-size: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-content {
+    flex-direction: column-reverse;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .hero-text,
+  .hero-image {
+    width: 100%;
+  }
+
+  .hero-text h1 {
+    max-width: 100%;
+  }
+
+  .hero-price {
+    justify-content: center;
+  }
+
+  .hero-image img {
+    height: 190px;
+  }
+}

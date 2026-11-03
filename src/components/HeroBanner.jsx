@@ -1,30 +1,50 @@
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import productsData from '../data/productsData';
 import './HeroBanner.css';
 
-function HeroBanner() {
-  const heroProducts = productsData.filter(
-    (product) => product.tag === 'hero-product'
-  );
+const heroProducts = productsData.filter(
+  (product) => product.tag === 'hero-product'
+);
 
+function HeroBanner() {
   const [activeSlide, setActiveSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   const currentProduct = heroProducts[activeSlide];
+
+  useEffect(() => {
+    if (isPaused || heroProducts.length <= 1) {
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setActiveSlide(
+        (previous) => (previous + 1) % heroProducts.length
+      );
+    }, 4500);
+
+    return () => clearInterval(interval);
+  }, [isPaused]);
 
   if (!currentProduct) {
     return null;
   }
 
   return (
-    <section className="hero-banner">
-
-      <span className="hero-watermark">
+    <section
+      className="hero-banner"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <span
+        className="hero-watermark"
+        key={`watermark-${currentProduct.id}`}
+      >
         {currentProduct.type}
       </span>
 
-      <div className="hero-content">
-
+      <div className="hero-content" key={currentProduct.id}>
         <div className="hero-text">
           <h2>{currentProduct.title}</h2>
 
@@ -51,7 +71,6 @@ function HeroBanner() {
             alt={currentProduct.title}
           />
         </div>
-
       </div>
 
       <div className="hero-dots">
@@ -60,11 +79,10 @@ function HeroBanner() {
             key={product.id}
             className={activeSlide === index ? 'active' : ''}
             onClick={() => setActiveSlide(index)}
-            aria-label={`Show slide ${index + 1}`}
+            aria-label={`Show ${product.title}`}
           />
         ))}
       </div>
-
     </section>
   );
 }

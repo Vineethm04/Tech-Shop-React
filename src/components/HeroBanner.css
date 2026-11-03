@@ -1,36 +1,37 @@
 
 .hero-banner {
   width: 100%;
-  min-height: 450px;
+  min-height: 560px;
   background: #141414;
   color: #a6aabe;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 8%;
+  padding: 35px 6%;
   box-sizing: border-box;
   overflow: hidden;
 }
 
-/* Background watermark */
+/* Background product-category watermark */
 .hero-watermark {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: clamp(100px, 17vw, 240px);
+  font-size: clamp(130px, 18vw, 280px);
   font-weight: 800;
   color: rgba(255, 255, 255, 0.035);
   white-space: nowrap;
   pointer-events: none;
   z-index: 0;
+  animation: watermark-appear 0.7s ease both;
 }
 
 /* Main hero content */
 .hero-content {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1500px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -38,19 +39,21 @@
   z-index: 1;
 }
 
+/* Left-side text */
 .hero-text {
-  width: 45%;
+  width: 42%;
+  animation: hero-text-enter 0.7s ease both;
 }
 
 .hero-text h2 {
-  font-size: 25px;
-  margin-bottom: 5px;
+  font-size: 28px;
+  margin-bottom: 8px;
   font-weight: 700;
 }
 
 .hero-text h1 {
-  font-size: 38px;
-  max-width: 400px;
+  font-size: 44px;
+  max-width: 480px;
   line-height: 1.2;
   margin: 0 0 25px;
   font-weight: 700;
@@ -64,7 +67,7 @@
 }
 
 .hero-price span {
-  font-size: 22px;
+  font-size: 23px;
   font-weight: 700;
 }
 
@@ -73,11 +76,12 @@
   font-size: 16px;
 }
 
+/* Shop button */
 .shop-now {
   background: #e00000;
   color: white;
   border: none;
-  padding: 12px 25px;
+  padding: 13px 27px;
   cursor: pointer;
   border-radius: 3px;
   font-size: 16px;
@@ -87,26 +91,30 @@
   background: #c00000;
 }
 
-/* Product image */
+/* Right-side product image */
 .hero-image {
-  width: 50%;
+  width: 58%;
   display: flex;
   justify-content: center;
   align-items: center;
+  animation: hero-image-enter 0.8s ease both;
 }
 
 .hero-image img {
   width: 100%;
-  max-width: 430px;
-  height: 350px;
+  max-width: 650px;
+  height: 500px;
   object-fit: contain;
 }
 
-/* Slider navigation */
+/* Hero navigation dots */
 .hero-dots {
   position: absolute;
   bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
+  align-items: center;
   gap: 8px;
   z-index: 2;
 }
@@ -119,17 +127,79 @@
   background: #444;
   cursor: pointer;
   padding: 0;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .hero-dots button.active {
   background: #e00000;
+  transform: scale(1.15);
 }
 
-/* Responsive layout */
+/* Slide animations */
+@keyframes hero-text-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-45px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes hero-image-enter {
+  from {
+    opacity: 0;
+    transform: translateX(65px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes watermark-appear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Laptop and smaller desktop screens */
+@media (max-width: 1200px) {
+  .hero-banner {
+    min-height: 500px;
+    padding: 35px 5%;
+  }
+
+  .hero-text h2 {
+    font-size: 24px;
+  }
+
+  .hero-text h1 {
+    font-size: 36px;
+  }
+
+  .hero-image img {
+    max-width: 530px;
+    height: 430px;
+  }
+}
+
+/* Tablet */
 @media (max-width: 768px) {
   .hero-banner {
-    min-height: 400px;
+    min-height: 430px;
     padding: 35px 5%;
+  }
+
+  .hero-text {
+    width: 45%;
   }
 
   .hero-text h2 {
@@ -137,11 +207,16 @@
   }
 
   .hero-text h1 {
-    font-size: 25px;
+    font-size: 27px;
+  }
+
+  .hero-image {
+    width: 55%;
   }
 
   .hero-image img {
-    height: 230px;
+    max-width: 380px;
+    height: 320px;
   }
 
   .hero-watermark {
@@ -149,10 +224,16 @@
   }
 }
 
+/* Mobile */
 @media (max-width: 480px) {
+  .hero-banner {
+    min-height: 480px;
+    padding: 30px 5% 60px;
+  }
+
   .hero-content {
     flex-direction: column-reverse;
-    gap: 15px;
+    gap: 10px;
     text-align: center;
   }
 
@@ -161,8 +242,13 @@
     width: 100%;
   }
 
+  .hero-text h2 {
+    font-size: 18px;
+  }
+
   .hero-text h1 {
     max-width: 100%;
+    font-size: 25px;
   }
 
   .hero-price {
@@ -170,6 +256,24 @@
   }
 
   .hero-image img {
-    height: 190px;
+    height: 240px;
+    max-width: 100%;
+  }
+
+  .hero-watermark {
+    font-size: 75px;
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .hero-text,
+  .hero-image,
+  .hero-watermark {
+    animation: none;
+  }
+
+  .hero-dots button {
+    transition: none;
   }
 }

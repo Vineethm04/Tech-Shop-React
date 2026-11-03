@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import productsData from '../data/productsData';
+import { useCart } from '../Context/CartContext';
 import './TopProducts.css';
 
 function TopProducts() {
@@ -13,7 +14,7 @@ function TopProducts() {
   ];
 
   const [activeCategory, setActiveCategory] = useState('All');
-  const [addedProducts, setAddedProducts] = useState([]);
+  const { addToCart } = useCart();
 
   // The reference displays the first 11 products.
   const topProducts = productsData.slice(0, 11);
@@ -24,14 +25,6 @@ function TopProducts() {
       : topProducts.filter(
           (product) => product.category === activeCategory
         );
-
-  const handleAddToCart = (productId) => {
-    setAddedProducts((previous) =>
-      previous.includes(productId)
-        ? previous
-        : [...previous, productId]
-    );
-  };
 
   return (
     <section className="top-products-section">
@@ -88,12 +81,9 @@ function TopProducts() {
 
               <button
                 className="add-to-cart-button"
-                onClick={() => handleAddToCart(product.id)}
-                disabled={addedProducts.includes(product.id)}
+                onClick={() => addToCart(product)}
               >
-                {addedProducts.includes(product.id)
-                  ? 'Added'
-                  : 'Add to cart'}
+                Add to cart
               </button>
             </div>
           </article>

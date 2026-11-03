@@ -1,8 +1,11 @@
 
 import { Search, ShoppingCart, UserRound } from 'lucide-react';
+import { useCart } from '../Context/CartContext';
 import './Navbar.css';
 
 function Navbar() {
+  const { cartCount } = useCart();
+
   return (
     <header className="navbar">
       <h2 className="logo">Tech-Shop</h2>
@@ -14,7 +17,7 @@ function Navbar() {
 
         <button className="cart-icon" aria-label="Shopping cart">
           <ShoppingCart size={23} />
-          <span className="cart-count">0</span>
+          <span className="cart-count">{cartCount}</span>
         </button>
 
         <button aria-label="Account">

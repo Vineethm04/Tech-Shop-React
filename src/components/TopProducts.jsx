@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import productsData from '../data/productsData';
 import { useCart } from '../Context/CartContext';

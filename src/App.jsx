@@ -14,7 +14,7 @@ function App() {
       <Navbar onCartClick={() => setShowCart(!showCart)} />
 
       {showCart ? (
-        <Cart />
+        <Cart onContinueShopping={() => setShowCart(false)} />
       ) : (
         <>
           <HeroBanner />

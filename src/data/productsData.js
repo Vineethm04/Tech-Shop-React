@@ -1,4 +1,3 @@
-
 const productsData = [
   {
     id: 1,
@@ -311,10 +310,10 @@ const productsData = [
   {
     id: 15,
     images: [
-      "/images/products/sonych710n-1.png",
-      "/images/products/sonych710n-2.png",
-      "/images/products/sonych710n-3.png",
-      "/images/products/sonych710n-4.png",
+      "/images/products/sonyCh710n-1.png",
+      "/images/products/sonyCh710n-2.png",
+      "/images/products/sonyCh710n-3.png",
+      "/images/products/sonyCh710n-4.png",
     ],
     brand: "Sony",
     title: "Sony WH-CH710N",
@@ -395,10 +394,10 @@ const productsData = [
   {
     id: 19,
     images: [
-      "/images/products/sonyxb400-1.png",
-      "/images/products/sonyxb400-2.png",
-      "/images/products/sonyxb400-3.png",
-      "/images/products/sonyxb400-4.png",
+      "/images/products/sonyXb400-1.png",
+      "/images/products/sonyXb400-2.png",
+      "/images/products/sonyXb400-3.png",
+      "/images/products/sonyXb400-4.png",
     ],
     brand: "Sony",
     title: "Sony WI-XB400",

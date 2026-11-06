@@ -3,7 +3,7 @@ import productsData from '../data/productsData';
 import { useCart } from '../Context/CartContext';
 import './TopProducts.css';
 
-function TopProducts() {
+function TopProducts({ onProductClick }) {
   const categories = [
     'All',
     'Headphones',
@@ -15,7 +15,6 @@ function TopProducts() {
   const [activeCategory, setActiveCategory] = useState('All');
   const { addToCart } = useCart();
 
-  // The reference displays the first 11 products.
   const topProducts = productsData.slice(0, 11);
 
   const filteredProducts =
@@ -46,7 +45,19 @@ function TopProducts() {
       <div className="top-products-grid">
         {filteredProducts.map((product) => (
           <article className="product-card" key={product.id}>
-            <div className="product-card-image">
+            <div
+              className="product-card-image"
+              role="button"
+              tabIndex={0}
+              onClick={() => onProductClick(product)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  onProductClick(product);
+                }
+              }}
+              style={{ cursor: 'pointer' }}
+            >
               <img
                 src={product.images[0]}
                 alt={product.title}
@@ -62,11 +73,14 @@ function TopProducts() {
                 {'★'.repeat(product.rateCount)}
               </div>
 
-              <h3>{product.title}</h3>
+              <h3
+                onClick={() => onProductClick(product)}
+                style={{ cursor: 'pointer' }}
+              >
+                {product.title}
+              </h3>
 
-              <p className="product-info">
-                {product.info}
-              </p>
+              <p className="product-info">{product.info}</p>
 
               <div className="product-card-price">
                 <span>

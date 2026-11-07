@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { useCart } from '../Context/CartContext';
-import { Star, ShoppingCart, CheckCircle } from 'lucide-react';
+import reviewsData from '../data/reviewsData';
+import { ShoppingCart } from 'lucide-react';
 import './ProductDetails.css';
 
 function ProductDetails({ product, onBack }) {
   const [activeImage, setActiveImage] = useState(0);
+  const [activeTab, setActiveTab] = useState('Specifications');
+
   const { addToCart } = useCart();
 
   if (!product) {
@@ -16,6 +19,16 @@ function ProductDetails({ product, onBack }) {
       product.originalPrice) *
       100
   );
+
+  const specifications = [
+    { label: 'Brand', value: product.brand },
+    { label: 'Model', value: product.title },
+    { label: 'Generic Name', value: product.category },
+    { label: 'Headphone Type', value: product.type },
+    { label: 'Connectivity', value: product.connectivity },
+  ];
+
+  const tabs = ['Specifications', 'Overview', 'Reviews'];
 
   return (
     <section className="product-details-section">
@@ -35,7 +48,10 @@ function ProductDetails({ product, onBack }) {
                 onClick={() => setActiveImage(index)}
                 aria-label={`View product image ${index + 1}`}
               >
-                <img src={image} alt={`${product.title} ${index + 1}`} />
+                <img
+                  src={image}
+                  alt={`${product.title} ${index + 1}`}
+                />
               </button>
             ))}
           </div>
@@ -59,7 +75,9 @@ function ProductDetails({ product, onBack }) {
               {'☆'.repeat(5 - product.rateCount)}
             </span>
 
-            <span>{product.ratings.toLocaleString('en-IN')} Ratings</span>
+            <span>
+              {product.ratings.toLocaleString('en-IN')} Ratings
+            </span>
           </div>
 
           <div className="product-detail-price">
@@ -80,11 +98,6 @@ function ProductDetails({ product, onBack }) {
             (Inclusive of all taxes)
           </p>
 
-          <div className="product-stock">
-            <CheckCircle size={18} />
-            <span>In Stock</span>
-          </div>
-
           <div className="product-detail-actions">
             <button
               className="detail-add-to-cart"
@@ -94,30 +107,62 @@ function ProductDetails({ product, onBack }) {
               Add to cart
             </button>
           </div>
+        </div>
+      </div>
 
-          <div className="product-basic-specifications">
-            <h3>Product Information</h3>
+      <div className="product-tabs-section">
+        <div className="product-tabs">
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              className={activeTab === tab ? 'tab-active' : ''}
+              onClick={() => setActiveTab(tab)}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
 
-            <div>
-              <span>Brand</span>
-              <span>{product.brand}</span>
+        <div className="product-tab-content">
+          {activeTab === 'Specifications' && (
+            <div className="specifications-list">
+              {specifications.map((specification) => (
+                <div
+                  className="specification-row"
+                  key={specification.label}
+                >
+                  <span>{specification.label}</span>
+                  <strong>{specification.value}</strong>
+                </div>
+              ))}
             </div>
+          )}
 
-            <div>
-              <span>Category</span>
-              <span>{product.category}</span>
+          {activeTab === 'Overview' && (
+            <div className="overview-content">
+              <p>{product.info}</p>
             </div>
+          )}
 
-            <div>
-              <span>Type</span>
-              <span>{product.type}</span>
-            </div>
+          {activeTab === 'Reviews' && (
+            <div className="reviews-list">
+              {reviewsData.map((review) => (
+                <article className="review-card" key={review.id}>
+                  <div className="review-header">
+                    <h3>{review.name}</h3>
+                    <span>{review.date}</span>
+                  </div>
 
-            <div>
-              <span>Connectivity</span>
-              <span>{product.connectivity}</span>
+                  <div className="review-stars">
+                    {'★'.repeat(review.rateCount)}
+                    {'☆'.repeat(5 - review.rateCount)}
+                  </div>
+
+                  <p>{review.review}</p>
+                </article>
+              ))}
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>

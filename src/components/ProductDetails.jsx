@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useCart } from '../Context/CartContext';
 import reviewsData from '../data/reviewsData';
 import { ShoppingCart } from 'lucide-react';
+import RelatedProducts from './RelatedProducts';
 import './ProductDetails.css';
 
 function ProductDetails({ product, onBack }) {
@@ -165,6 +166,8 @@ function ProductDetails({ product, onBack }) {
           )}
         </div>
       </div>
+
+      <RelatedProducts product={product} />
     </section>
   );
 }

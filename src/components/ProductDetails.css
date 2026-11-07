@@ -4,6 +4,7 @@
   padding: 35px 5%;
   background-color: #141414;
   color: #a6aabe;
+  overflow-x: clip;
 }
 
 .product-back-button {

@@ -3,8 +3,6 @@ import {
   Trash2,
   Minus,
   Plus,
-  ShoppingCart,
-  X,
 } from 'lucide-react';
 import './Cart.css';
 
@@ -21,9 +19,62 @@ function Cart({ onContinueShopping }) {
     return (
       <section className="empty-cart-page">
         <div className="empty-cart-content">
+
           <div className="empty-cart-icon">
-            <ShoppingCart size={170} strokeWidth={1.8} />
-            <X className="empty-cart-x" size={48} strokeWidth={3} />
+            <svg
+              viewBox="0 0 180 180"
+              className="empty-cart-svg"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {/* Cart handle and frame */}
+              <path
+                d="M20 20 H31 L48 137"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="10"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+
+              {/* Cart basket */}
+              <path
+                d="M38 43 H160 L146 137 H49"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="10"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+
+              {/* X inside the basket */}
+              <path
+                d="M82 72 L116 106 M116 72 L82 106"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="9"
+                strokeLinecap="round"
+              />
+
+              {/* Left wheel */}
+              <circle
+                cx="64"
+                cy="158"
+                r="12"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="9"
+              />
+
+              {/* Right wheel */}
+              <circle
+                cx="135"
+                cy="158"
+                r="12"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="9"
+              />
+            </svg>
           </div>
 
           <h2>Your Cart is Empty</h2>
@@ -34,6 +85,7 @@ function Cart({ onContinueShopping }) {
           >
             Start Shopping
           </button>
+
         </div>
       </section>
     );
@@ -44,11 +96,16 @@ function Cart({ onContinueShopping }) {
       <h2 className="cart-heading">Shopping Cart</h2>
 
       <div className="cart-layout">
+
         <div className="cart-items">
           {cartItems.map((product) => (
             <article className="cart-item" key={product.id}>
+
               <div className="cart-item-image">
-                <img src={product.images[0]} alt={product.title} />
+                <img
+                  src={product.images[0]}
+                  alt={product.title}
+                />
               </div>
 
               <div className="cart-item-details">
@@ -62,7 +119,10 @@ function Cart({ onContinueShopping }) {
                   <button
                     aria-label={`Decrease ${product.title} quantity`}
                     onClick={() =>
-                      updateQuantity(product.id, product.quantity - 1)
+                      updateQuantity(
+                        product.id,
+                        product.quantity - 1
+                      )
                     }
                   >
                     <Minus size={16} />
@@ -73,7 +133,10 @@ function Cart({ onContinueShopping }) {
                   <button
                     aria-label={`Increase ${product.title} quantity`}
                     onClick={() =>
-                      updateQuantity(product.id, product.quantity + 1)
+                      updateQuantity(
+                        product.id,
+                        product.quantity + 1
+                      )
                     }
                   >
                     <Plus size={16} />
@@ -96,6 +159,7 @@ function Cart({ onContinueShopping }) {
                   <Trash2 size={19} />
                 </button>
               </div>
+
             </article>
           ))}
         </div>
@@ -122,6 +186,7 @@ function Cart({ onContinueShopping }) {
             Proceed to Checkout
           </button>
         </aside>
+
       </div>
     </section>
   );

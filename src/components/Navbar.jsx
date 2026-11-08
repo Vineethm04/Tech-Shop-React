@@ -2,7 +2,7 @@ import { Search, ShoppingCart, UserRound } from 'lucide-react';
 import { useCart } from '../Context/CartContext';
 import './Navbar.css';
 
-function Navbar({ onCartClick }) {
+function Navbar({ onCartClick, onAccountClick }) {
   const { cartCount } = useCart();
 
   return (
@@ -23,7 +23,10 @@ function Navbar({ onCartClick }) {
           <span className="cart-count">{cartCount}</span>
         </button>
 
-        <button aria-label="Account">
+        <button
+          aria-label="Account"
+          onClick={onAccountClick}
+        >
           <UserRound size={23} />
         </button>
       </div>

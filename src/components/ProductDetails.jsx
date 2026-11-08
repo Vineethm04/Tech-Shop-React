@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useCart } from '../Context/CartContext';
 import reviewsData from '../data/reviewsData';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Check } from 'lucide-react';
 import RelatedProducts from './RelatedProducts';
 import './ProductDetails.css';
 
-function ProductDetails({ product, onBack }) {
+function ProductDetails({ product }) {
   const [activeImage, setActiveImage] = useState(0);
   const [activeTab, setActiveTab] = useState('Specifications');
 
@@ -15,10 +15,10 @@ function ProductDetails({ product, onBack }) {
     return null;
   }
 
+  const savings = product.originalPrice - product.finalPrice;
+
   const discount = Math.round(
-    ((product.originalPrice - product.finalPrice) /
-      product.originalPrice) *
-      100
+    (savings / product.originalPrice) * 100
   );
 
   const specifications = [
@@ -33,11 +33,9 @@ function ProductDetails({ product, onBack }) {
 
   return (
     <section className="product-details-section">
-      <button className="product-back-button" onClick={onBack}>
-        ← Back to Products
-      </button>
-
       <div className="product-details-container">
+
+        {/* Product Image Gallery */}
         <div className="product-gallery">
           <div className="product-thumbnails">
             {product.images.map((image, index) => (
@@ -65,10 +63,13 @@ function ProductDetails({ product, onBack }) {
           </div>
         </div>
 
+        {/* Product Information */}
         <div className="product-information">
           <h1>{product.title}</h1>
 
-          <p className="product-description">{product.info}</p>
+          <p className="product-description">
+            {product.info}
+          </p>
 
           <div className="product-detail-rating">
             <span className="rating-stars">
@@ -77,28 +78,52 @@ function ProductDetails({ product, onBack }) {
             </span>
 
             <span>
-              {product.ratings.toLocaleString('en-IN')} Ratings
+              | {product.ratings.toLocaleString('en-IN')} Ratings
             </span>
           </div>
 
+          {/* Price and Stock */}
           <div className="product-detail-price">
-            <span className="current-price">
-              ₹{product.finalPrice.toLocaleString('en-IN')}
-            </span>
+            <div className="price-values">
+              <span className="current-price">
+                ₹{product.finalPrice.toLocaleString('en-IN')}
+              </span>
 
-            <del>
-              ₹{product.originalPrice.toLocaleString('en-IN')}
-            </del>
+              <del>
+                ₹{product.originalPrice.toLocaleString('en-IN')}
+              </del>
+            </div>
 
-            <span className="discount-percentage">
-              {discount}% off
+            <span className="stock-status">
+              <Check size={14} />
+              In Stock
             </span>
           </div>
+
+          <p className="savings-information">
+            You save: ₹{savings.toLocaleString('en-IN')} ({discount}%)
+          </p>
 
           <p className="tax-information">
             (Inclusive of all taxes)
           </p>
 
+          {/* Offers */}
+          <div className="product-offers">
+            <h3>Offers and Discounts</h3>
+
+            <div className="product-offers-list">
+              <div className="product-offer-card">
+                No Cost EMI on Credit Card
+              </div>
+
+              <div className="product-offer-card">
+                Pay Later &amp; Avail Cashback
+              </div>
+            </div>
+          </div>
+
+          {/* Add to Cart */}
           <div className="product-detail-actions">
             <button
               className="detail-add-to-cart"
@@ -111,6 +136,7 @@ function ProductDetails({ product, onBack }) {
         </div>
       </div>
 
+      {/* Product Tabs */}
       <div className="product-tabs-section">
         <div className="product-tabs">
           {tabs.map((tab) => (

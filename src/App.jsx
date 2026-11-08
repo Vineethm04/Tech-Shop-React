@@ -5,6 +5,8 @@ import FeaturedProducts from './components/FeaturedProducts';
 import TopProducts from './components/TopProducts';
 import Cart from './components/Cart';
 import ProductDetails from './components/ProductDetails';
+import OurAdvantages from './components/OurAdvantages';
+import Footer from './components/Footer';
 import './App.css';
 
 function App() {
@@ -43,6 +45,9 @@ function App() {
           <TopProducts onProductClick={handleProductClick} />
         </>
       )}
+
+      <OurAdvantages />
+      <Footer />
     </>
   );
 }

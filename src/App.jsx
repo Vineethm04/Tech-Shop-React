@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import Navbar from './components/Navbar';
 import HeroBanner from './components/HeroBanner';
 import FeaturedProducts from './components/FeaturedProducts';
@@ -8,6 +9,7 @@ import ProductDetails from './components/ProductDetails';
 import Account from './components/Account';
 import OurAdvantages from './components/OurAdvantages';
 import Footer from './components/Footer';
+
 import './App.css';
 
 function App() {
@@ -36,25 +38,37 @@ function App() {
       <Navbar
         onCartClick={handleCartClick}
         onAccountClick={handleAccountClick}
+        onProductClick={handleProductClick}
       />
 
       {showCart ? (
-        <Cart onContinueShopping={() => setShowCart(false)} />
+        <Cart
+          onContinueShopping={() => setShowCart(false)}
+        />
       ) : selectedProduct ? (
-        <ProductDetails product={selectedProduct} />
+        <ProductDetails
+          product={selectedProduct}
+        />
       ) : (
         <>
           <HeroBanner />
+
           <FeaturedProducts />
-          <TopProducts onProductClick={handleProductClick} />
+
+          <TopProducts
+            onProductClick={handleProductClick}
+          />
         </>
       )}
 
       <OurAdvantages />
+
       <Footer />
 
       {showAccount && (
-        <Account onClose={() => setShowAccount(false)} />
+        <Account
+          onClose={() => setShowAccount(false)}
+        />
       )}
     </>
   );

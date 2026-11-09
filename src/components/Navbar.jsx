@@ -4,7 +4,12 @@ import { useCart } from '../Context/CartContext';
 import productsData from '../data/productsData';
 import './Navbar.css';
 
-function Navbar({ onCartClick, onAccountClick, onProductClick }) {
+function Navbar({
+  onCartClick,
+  onAccountClick,
+  onProductClick,
+  onHomeClick,
+}) {
   const { cartCount } = useCart();
 
   const [searchOpen, setSearchOpen] = useState(false);
@@ -23,6 +28,12 @@ function Navbar({ onCartClick, onAccountClick, onProductClick }) {
     setSearchTerm('');
   };
 
+  const handleHomeClick = () => {
+    setSearchOpen(false);
+    setSearchTerm('');
+    onHomeClick();
+  };
+
   const handleProductSelect = (product) => {
     setSearchOpen(false);
     setSearchTerm('');
@@ -31,7 +42,21 @@ function Navbar({ onCartClick, onAccountClick, onProductClick }) {
 
   return (
     <header className="navbar">
-      <h2 className="logo">Tech-Shop</h2>
+      <h2
+        className="logo"
+        onClick={handleHomeClick}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            handleHomeClick();
+          }
+        }}
+        role="button"
+        tabIndex={0}
+        aria-label="Go to homepage"
+      >
+        Tech-Shop
+      </h2>
 
       <div className="nav-icons">
         <button

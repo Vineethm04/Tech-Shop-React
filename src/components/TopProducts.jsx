@@ -3,7 +3,7 @@ import productsData from '../data/productsData';
 import { useCart } from '../Context/CartContext';
 import './TopProducts.css';
 
-function TopProducts({ onProductClick }) {
+function TopProducts({ onProductClick, onBrowseAll }) {
   const categories = [
     'All',
     'Headphones',
@@ -56,7 +56,7 @@ function TopProducts({ onProductClick }) {
                   onProductClick(product);
                 }
               }}
-              style={{ cursor: 'pointer' }}
+              aria-label={`View ${product.title}`}
             >
               <img
                 src={product.images[0]}
@@ -75,12 +75,20 @@ function TopProducts({ onProductClick }) {
 
               <h3
                 onClick={() => onProductClick(product)}
-                style={{ cursor: 'pointer' }}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') {
+                    onProductClick(product);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
               >
                 {product.title}
               </h3>
 
               <p className="product-info">{product.info}</p>
+
+              <div className="product-divider"></div>
 
               <div className="product-card-price">
                 <span>
@@ -103,7 +111,10 @@ function TopProducts({ onProductClick }) {
         ))}
 
         {activeCategory === 'All' && (
-          <button className="browse-all-card">
+          <button
+            className="browse-all-card"
+            onClick={onBrowseAll}
+          >
             <span>Browse All</span>
             <span>Products →</span>
           </button>

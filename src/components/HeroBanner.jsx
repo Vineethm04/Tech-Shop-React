@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import productsData from '../data/productsData';
 import './HeroBanner.css';
@@ -7,7 +6,7 @@ const heroProducts = productsData.filter(
   (product) => product.tag === 'hero-product'
 );
 
-function HeroBanner() {
+function HeroBanner({ onProductClick }) {
   const [activeSlide, setActiveSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -60,7 +59,10 @@ function HeroBanner() {
             </del>
           </div>
 
-          <button className="shop-now">
+          <button
+            className="shop-now"
+            onClick={() => onProductClick(currentProduct)}
+          >
             Shop Now
           </button>
         </div>

@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import HeroBanner from './components/HeroBanner';
 import FeaturedProducts from './components/FeaturedProducts';
 import TopProducts from './components/TopProducts';
+import AllProducts from './components/AllProducts';
 import Cart from './components/Cart';
 import ProductDetails from './components/ProductDetails';
 import Account from './components/Account';
@@ -15,22 +16,46 @@ import './App.css';
 function App() {
   const [showCart, setShowCart] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
+  const [showAllProducts, setShowAllProducts] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const handleCartClick = () => {
     setShowCart((previous) => !previous);
     setShowAccount(false);
+    setShowAllProducts(false);
     setSelectedProduct(null);
   };
 
   const handleAccountClick = () => {
     setShowAccount((previous) => !previous);
+    setShowCart(false);
+    setShowAllProducts(false);
+    setSelectedProduct(null);
   };
 
   const handleProductClick = (product) => {
     setSelectedProduct(product);
     setShowCart(false);
     setShowAccount(false);
+    setShowAllProducts(false);
+  };
+
+  const handleBrowseAll = () => {
+    setShowAllProducts(true);
+    setShowCart(false);
+    setShowAccount(false);
+    setSelectedProduct(null);
+  };
+
+  const handleBackToHome = () => {
+    setShowAllProducts(false);
+  };
+
+  const handleHomeClick = () => {
+    setShowCart(false);
+    setShowAccount(false);
+    setShowAllProducts(false);
+    setSelectedProduct(null);
   };
 
   return (
@@ -39,6 +64,7 @@ function App() {
         onCartClick={handleCartClick}
         onAccountClick={handleAccountClick}
         onProductClick={handleProductClick}
+        onHomeClick={handleHomeClick}
       />
 
       {showCart ? (
@@ -49,14 +75,22 @@ function App() {
         <ProductDetails
           product={selectedProduct}
         />
+      ) : showAllProducts ? (
+        <AllProducts
+          onProductClick={handleProductClick}
+          onBack={handleBackToHome}
+        />
       ) : (
         <>
-          <HeroBanner />
+          <HeroBanner
+            onProductClick={handleProductClick}
+          />
 
           <FeaturedProducts />
 
           <TopProducts
             onProductClick={handleProductClick}
+            onBrowseAll={handleBrowseAll}
           />
         </>
       )}

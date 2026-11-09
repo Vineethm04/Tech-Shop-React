@@ -3,7 +3,7 @@ import { X } from 'lucide-react';
 import './Account.css';
 
 function Account({ onClose }) {
-  const [isSignup, setIsSignup] = useState(true);
+  const [isSignup, setIsSignup] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -13,7 +13,9 @@ function Account({ onClose }) {
   return (
     <div className="account-overlay" onClick={onClose}>
       <div
-        className="account-popup"
+        className={`account-popup ${
+          isSignup ? 'account-popup-signup' : 'account-popup-login'
+        }`}
         onClick={(event) => event.stopPropagation()}
       >
         <button
@@ -21,18 +23,21 @@ function Account({ onClose }) {
           onClick={onClose}
           aria-label="Close account popup"
         >
-          <X size={18} />
+          <X size={20} />
         </button>
 
         <h2>{isSignup ? 'Signup' : 'Login'}</h2>
 
         <p className="account-switch-text">
-          {isSignup ? 'Already have an account?' : "Don't have an account?"}{' '}
+          {isSignup
+            ? 'Already have an account?'
+            : 'New to Tech-Shop?'}{' '}
+
           <button
             type="button"
             onClick={() => setIsSignup((previous) => !previous)}
           >
-            {isSignup ? 'Login' : 'Signup'}
+            {isSignup ? 'Login' : 'Create an account'}
           </button>
         </p>
 
@@ -76,7 +81,7 @@ function Account({ onClose }) {
 
         <div className="account-divider">
           <span></span>
-          <p>or {isSignup ? 'login' : 'continue'} with</p>
+          <p>or login with</p>
           <span></span>
         </div>
 
@@ -84,9 +89,11 @@ function Account({ onClose }) {
           <button type="button" className="facebook-button">
             Facebook
           </button>
+
           <button type="button" className="google-button">
             Google
           </button>
+
           <button type="button" className="twitter-button">
             Twitter
           </button>

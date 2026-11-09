@@ -6,23 +6,31 @@
   justify-content: center;
   align-items: center;
   padding: 20px;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.65);
+  box-sizing: border-box;
 }
 
 .account-popup {
   position: relative;
   width: 100%;
-  max-width: 380px;
-  padding: 28px 25px;
+  max-width: 520px;
+  padding: 50px 45px;
   background: #141414;
   color: #a6aabe;
-  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #555 #141414;
 }
 
 .account-close {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 10px;
+  right: 10px;
+  width: 35px;
+  height: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,61 +42,70 @@
 }
 
 .account-popup h2 {
-  margin: 0 0 5px;
+  margin: 0 0 12px;
   color: #a6aabe;
-  font-size: 23px;
-  font-weight: 600;
+  font-size: 28px;
+  font-weight: 700;
 }
 
 .account-switch-text {
-  margin: 0 0 22px;
-  font-size: 12px;
+  margin: 0 0 38px;
+  font-size: 17px;
+  line-height: 1.5;
+  color: #a6aabe;
 }
 
 .account-switch-text button {
   padding: 0;
   border: none;
   background: transparent;
-  color: #a6aabe;
-  font-size: 12px;
+  color: #ffffff;
+  font-size: 17px;
   cursor: pointer;
+}
+
+.account-switch-text button:hover {
+  text-decoration: underline;
 }
 
 .account-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 28px;
 }
 
 .account-form input {
   width: 100%;
-  height: 43px;
-  padding: 0 12px;
+  height: 63px;
+  padding: 0 15px;
   outline: none;
-  border: 1px solid #555;
+  border: 2px solid #555555;
+  border-radius: 0;
   background: transparent;
-  color: #fff;
-  font-size: 12px;
+  color: #ffffff;
+  font-size: 17px;
+  box-sizing: border-box;
 }
 
 .account-form input:focus {
-  border-color: #aaa;
+  border-color: #a6aabe;
 }
 
 .account-form input::placeholder {
-  color: #929292;
+  color: #a6aabe;
 }
 
 .account-submit {
   width: 100%;
-  height: 42px;
-  margin-top: 5px;
+  height: 50px;
+  margin-top: 15px;
   border: none;
   border-radius: 2px;
   background: #e60000;
   color: white;
-  font-size: 13px;
+  font-size: 17px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .account-submit:hover {
@@ -98,35 +115,40 @@
 .account-divider {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin: 22px 0 18px;
+  gap: 20px;
+  margin: 40px 0 35px;
 }
 
 .account-divider span {
   flex: 1;
   height: 1px;
-  background: #444;
+  background: #555555;
 }
 
 .account-divider p {
   margin: 0;
   color: #a6aabe;
-  font-size: 11px;
+  font-size: 17px;
   white-space: nowrap;
 }
 
 .account-social-buttons {
   display: flex;
-  gap: 8px;
+  gap: 16px;
 }
 
 .account-social-buttons button {
   flex: 1;
-  height: 38px;
+  height: 55px;
   border: none;
   color: white;
-  font-size: 11px;
+  font-size: 16px;
   cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.account-social-buttons button:hover {
+  opacity: 0.85;
 }
 
 .facebook-button {
@@ -141,9 +163,131 @@
   background: #159bd7;
 }
 
-@media (max-width: 480px) {
+/* Signup: compact layout to fit the screen */
+
+.account-popup-signup {
+  padding: 35px 45px;
+}
+
+.account-popup-signup h2 {
+  margin-bottom: 8px;
+}
+
+.account-popup-signup .account-switch-text {
+  margin-bottom: 24px;
+}
+
+.account-popup-signup .account-form {
+  gap: 16px;
+}
+
+.account-popup-signup .account-form input {
+  height: 54px;
+}
+
+.account-popup-signup .account-submit {
+  height: 48px;
+  margin-top: 8px;
+}
+
+.account-popup-signup .account-divider {
+  margin: 25px 0 22px;
+}
+
+.account-popup-signup .account-social-buttons button {
+  height: 48px;
+}
+
+/* Responsive design */
+
+@media (max-width: 600px) {
+  .account-overlay {
+    padding: 15px;
+  }
+
   .account-popup {
-    max-width: 340px;
-    padding: 25px 20px;
+    max-width: 460px;
+    padding: 42px 25px 32px;
+  }
+
+  .account-popup h2 {
+    font-size: 25px;
+  }
+
+  .account-switch-text {
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+
+  .account-switch-text button {
+    font-size: 14px;
+  }
+
+  .account-form {
+    gap: 18px;
+  }
+
+  .account-form input {
+    height: 54px;
+    font-size: 15px;
+  }
+
+  .account-submit {
+    height: 48px;
+    font-size: 15px;
+  }
+
+  .account-divider {
+    gap: 12px;
+    margin: 30px 0 25px;
+  }
+
+  .account-divider p {
+    font-size: 14px;
+  }
+
+  .account-social-buttons {
+    gap: 8px;
+  }
+
+  .account-social-buttons button {
+    height: 45px;
+    font-size: 12px;
+  }
+
+  /* Compact Signup on mobile */
+  .account-popup-signup {
+    padding: 35px 25px 25px;
+  }
+
+  .account-popup-signup .account-switch-text {
+    margin-bottom: 20px;
+  }
+
+  .account-popup-signup .account-form {
+    gap: 13px;
+  }
+
+  .account-popup-signup .account-form input {
+    height: 48px;
+  }
+
+  .account-popup-signup .account-divider {
+    margin: 22px 0 18px;
+  }
+
+  .account-popup-signup .account-social-buttons button {
+    height: 42px;
+  }
+}
+
+@media (max-width: 380px) {
+  .account-popup {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .account-social-buttons {
+    flex-direction: column;
   }
 }

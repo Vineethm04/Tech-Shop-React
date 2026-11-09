@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import productsData from '../data/productsData';
 import './FeaturedProducts.css';
 
-function FeaturedProducts() {
+function FeaturedProducts({ onProductClick }) {
   const featuredOrder = [9, 13, 14, 2, 8];
 
   const featuredProducts = featuredOrder
@@ -16,7 +16,6 @@ function FeaturedProducts() {
     ...featuredProducts.slice(0, 2),
   ];
 
-  // Start with boAt Airdopes 203 in the centre.
   const [activeIndex, setActiveIndex] = useState(4);
   const [isPaused, setIsPaused] = useState(false);
   const [transitionEnabled, setTransitionEnabled] = useState(true);
@@ -43,11 +42,6 @@ function FeaturedProducts() {
   const moveNext = () => {
     setTransitionEnabled(true);
     setActiveIndex((previous) => previous + 1);
-  };
-
-  const movePrevious = () => {
-    setTransitionEnabled(true);
-    setActiveIndex((previous) => previous - 1);
   };
 
   // Seamlessly reposition after reaching a cloned product.
@@ -113,21 +107,27 @@ function FeaturedProducts() {
           onTransitionEnd={handleTransitionEnd}
         >
           {carouselProducts.map((product, index) => {
-            const isActive = index === activeIndex;
+            const distance = Math.abs(index - activeIndex);
+
+            const itemLevel =
+              distance === 0
+                ? 'featured-item-active'
+                : distance === 1
+                  ? 'featured-item-near'
+                  : 'featured-item-far';
 
             return (
               <article
                 key={`${product.id}-${index}`}
-                className={`featured-item ${
-                  isActive ? 'featured-item-active' : ''
-                }`}
-                style={{
-                  '--scale': isActive ? 1.08 : 0.92,
-                }}
-                onClick={() => {
-                  if (index >= 2 && index <= 6) {
-                    setTransitionEnabled(true);
-                    setActiveIndex(index);
+                className={`featured-item ${itemLevel}`}
+                onClick={() => onProductClick(product)}
+                role="button"
+                tabIndex={0}
+                aria-label={`View ${product.title}`}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    onProductClick(product);
                   }
                 }}
               >

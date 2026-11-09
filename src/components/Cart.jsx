@@ -15,18 +15,24 @@ function Cart({ onContinueShopping }) {
     updateQuantity,
   } = useCart();
 
+  const originalTotal = cartItems.reduce(
+    (total, product) =>
+      total + product.originalPrice * product.quantity,
+    0
+  );
+
+  const totalDiscount = originalTotal - cartTotal;
+
   if (cartItems.length === 0) {
     return (
       <section className="empty-cart-page">
         <div className="empty-cart-content">
-
           <div className="empty-cart-icon">
             <svg
               viewBox="0 0 180 180"
               className="empty-cart-svg"
               xmlns="http://www.w3.org/2000/svg"
             >
-              {/* Cart handle and frame */}
               <path
                 d="M20 20 H31 L48 137"
                 fill="none"
@@ -36,7 +42,6 @@ function Cart({ onContinueShopping }) {
                 strokeLinejoin="round"
               />
 
-              {/* Cart basket */}
               <path
                 d="M38 43 H160 L146 137 H49"
                 fill="none"
@@ -46,7 +51,6 @@ function Cart({ onContinueShopping }) {
                 strokeLinejoin="round"
               />
 
-              {/* X inside the basket */}
               <path
                 d="M82 72 L116 106 M116 72 L82 106"
                 fill="none"
@@ -55,7 +59,6 @@ function Cart({ onContinueShopping }) {
                 strokeLinecap="round"
               />
 
-              {/* Left wheel */}
               <circle
                 cx="64"
                 cy="158"
@@ -65,7 +68,6 @@ function Cart({ onContinueShopping }) {
                 strokeWidth="9"
               />
 
-              {/* Right wheel */}
               <circle
                 cx="135"
                 cy="158"
@@ -85,7 +87,6 @@ function Cart({ onContinueShopping }) {
           >
             Start Shopping
           </button>
-
         </div>
       </section>
     );
@@ -97,6 +98,7 @@ function Cart({ onContinueShopping }) {
 
       <div className="cart-layout">
 
+        {/* Scrollable Cart Items */}
         <div className="cart-items">
           {cartItems.map((product) => (
             <article className="cart-item" key={product.id}>
@@ -114,6 +116,10 @@ function Cart({ onContinueShopping }) {
                 <p className="cart-item-price">
                   ₹{product.finalPrice.toLocaleString('en-IN')}
                 </p>
+
+                <del className="cart-item-original-price">
+                  ₹{product.originalPrice.toLocaleString('en-IN')}
+                </del>
 
                 <div className="cart-quantity">
                   <button
@@ -164,12 +170,22 @@ function Cart({ onContinueShopping }) {
           ))}
         </div>
 
+        {/* Order Summary */}
         <aside className="cart-summary">
           <h3>Order Summary</h3>
 
           <div className="summary-row">
-            <span>Products ({cartCount})</span>
-            <span>₹{cartTotal.toLocaleString('en-IN')}</span>
+            <span>Original Price</span>
+            <span>
+              ₹{originalTotal.toLocaleString('en-IN')}
+            </span>
+          </div>
+
+          <div className="summary-row">
+            <span>Discount</span>
+            <span className="discount-value">
+              -₹{totalDiscount.toLocaleString('en-IN')}
+            </span>
           </div>
 
           <div className="summary-row">
@@ -178,8 +194,10 @@ function Cart({ onContinueShopping }) {
           </div>
 
           <div className="summary-total">
-            <span>Total Amount</span>
-            <span>₹{cartTotal.toLocaleString('en-IN')}</span>
+            <span>Total Price</span>
+            <span>
+              ₹{cartTotal.toLocaleString('en-IN')}
+            </span>
           </div>
 
           <button className="checkout-button">

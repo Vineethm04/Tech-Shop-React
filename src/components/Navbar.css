@@ -17,6 +17,7 @@
   font-weight: 700;
   margin: 0;
   color: #a6aabe;
+  cursor: pointer;
 }
 
 .nav-icons {
@@ -57,6 +58,89 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Account dropdown */
+
+.account-menu-wrapper {
+  position: relative;
+}
+
+.account-dropdown {
+  position: absolute;
+  top: calc(100% + 25px);
+  right: -5px;
+  width: 300px;
+  padding: 25px 23px;
+  background-color: #141414;
+  border: 1px solid #555;
+  border-radius: 3px;
+  box-sizing: border-box;
+  color: #a6aabe;
+  z-index: 150;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.35);
+  animation: accountDropdownAppear 0.18s ease;
+}
+
+@keyframes accountDropdownAppear {
+  from {
+    opacity: 0;
+    transform: translateY(-7px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.account-dropdown h3 {
+  margin: 0 0 8px;
+  color: #a6aabe;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.account-dropdown-description {
+  margin: 0 0 18px;
+  color: #a6aabe;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.account-dropdown .account-login-button {
+  width: 150px;
+  height: 48px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid #a6aabe;
+  border-radius: 0;
+  color: #a6aabe;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.account-dropdown .account-login-button:hover {
+  background-color: #a6aabe;
+  color: #141414;
+}
+
+.account-dropdown-divider {
+  width: 100%;
+  height: 1px;
+  margin: 19px 0;
+  background-color: #383838;
+}
+
+.account-dropdown-footer {
+  margin: 0;
+  color: #a6aabe;
+  font-size: 14px;
 }
 
 /* Search overlay */
@@ -155,6 +239,8 @@
   font-size: 14px;
 }
 
+/* Responsive design */
+
 @media (max-width: 600px) {
   .navbar {
     padding: 0 15px;
@@ -175,5 +261,18 @@
 
   .search-suggestion {
     font-size: 14px;
+  }
+
+  .account-dropdown {
+    width: 280px;
+    right: -5px;
+    padding: 22px 18px;
+  }
+}
+
+@media (max-width: 350px) {
+  .account-dropdown {
+    width: min(280px, calc(100vw - 25px));
+    right: -5px;
   }
 }

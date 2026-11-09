@@ -67,6 +67,14 @@ function App() {
     setSelectedProduct(null);
   };
 
+  // Navigate from the empty cart to All Products.
+  const handleContinueShopping = () => {
+    setShowCart(false);
+    setShowAccount(false);
+    setShowAllProducts(true);
+    setSelectedProduct(null);
+  };
+
   return (
     <>
       <Navbar
@@ -78,7 +86,7 @@ function App() {
 
       {showCart ? (
         <Cart
-          onContinueShopping={() => setShowCart(false)}
+          onContinueShopping={handleContinueShopping}
         />
       ) : selectedProduct ? (
         <ProductDetails
@@ -95,7 +103,9 @@ function App() {
             onProductClick={handleProductClick}
           />
 
-          <FeaturedProducts />
+          <FeaturedProducts
+            onProductClick={handleProductClick}
+          />
 
           <TopProducts
             onProductClick={handleProductClick}

@@ -1,5 +1,10 @@
-import { useState } from 'react';
-import { Search, ShoppingCart, UserRound, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import {
+  Search,
+  ShoppingCart,
+  UserRound,
+  X,
+} from 'lucide-react';
 import { useCart } from '../Context/CartContext';
 import productsData from '../data/productsData';
 import './Navbar.css';
@@ -14,6 +19,9 @@ function Navbar({
 
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+
+  const accountMenuRef = useRef(null);
 
   const filteredProducts = searchTerm.trim()
     ? productsData
@@ -23,15 +31,60 @@ function Navbar({
         .slice(0, 6)
     : [];
 
+  // Close the account dropdown when clicking outside it.
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (
+        accountMenuRef.current &&
+        !accountMenuRef.current.contains(event.target)
+      ) {
+        setAccountMenuOpen(false);
+      }
+    };
+
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        setAccountMenuOpen(false);
+        setSearchOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleOutsideClick);
+    document.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, []);
+
   const handleSearchToggle = () => {
     setSearchOpen((previous) => !previous);
     setSearchTerm('');
+    setAccountMenuOpen(false);
   };
 
   const handleHomeClick = () => {
     setSearchOpen(false);
     setSearchTerm('');
+    setAccountMenuOpen(false);
     onHomeClick();
+  };
+
+  const handleCartClick = () => {
+    setAccountMenuOpen(false);
+    setSearchOpen(false);
+    onCartClick();
+  };
+
+  const handleAccountToggle = () => {
+    setAccountMenuOpen((previous) => !previous);
+    setSearchOpen(false);
+  };
+
+  const handleLoginSignup = () => {
+    setAccountMenuOpen(false);
+    onAccountClick();
   };
 
   const handleProductSelect = (product) => {
@@ -69,18 +122,45 @@ function Navbar({
         <button
           className="cart-icon"
           aria-label="Shopping cart"
-          onClick={onCartClick}
+          onClick={handleCartClick}
         >
           <ShoppingCart size={23} />
           <span className="cart-count">{cartCount}</span>
         </button>
 
-        <button
-          aria-label="Account"
-          onClick={onAccountClick}
-        >
-          <UserRound size={23} />
-        </button>
+        <div className="account-menu-wrapper" ref={accountMenuRef}>
+          <button
+            aria-label="Account"
+            aria-expanded={accountMenuOpen}
+            aria-haspopup="true"
+            onClick={handleAccountToggle}
+          >
+            <UserRound size={23} />
+          </button>
+
+          {accountMenuOpen && (
+            <div className="account-dropdown">
+              <h3>Hello!</h3>
+
+              <p className="account-dropdown-description">
+                Access account and manage orders
+              </p>
+
+              <button
+                className="account-login-button"
+                onClick={handleLoginSignup}
+              >
+                Login / Signup
+              </button>
+
+              <div className="account-dropdown-divider" />
+
+              <p className="account-dropdown-footer">
+                Please Login
+              </p>
+            </div>
+          )}
+        </div>
       </div>
 
       {searchOpen && (

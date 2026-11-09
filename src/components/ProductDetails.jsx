@@ -151,6 +151,8 @@ function ProductDetails({ product }) {
         </div>
 
         <div className="product-tab-content">
+
+          {/* Specifications */}
           {activeTab === 'Specifications' && (
             <div className="specifications-list">
               {specifications.map((specification) => (
@@ -165,12 +167,35 @@ function ProductDetails({ product }) {
             </div>
           )}
 
+          {/* Overview */}
           {activeTab === 'Overview' && (
             <div className="overview-content">
-              <p>{product.info}</p>
+              <h3 className="overview-heading">
+                The <span>{product.title}</span> {product.info} provides
+                with fabulous sound quality
+              </h3>
+
+              <ul className="overview-highlights">
+                <li>Sound Tuned to Perfection</li>
+                <li>Comfortable to Wear</li>
+                <li>Long Hours Playback Time</li>
+              </ul>
+
+              <p className="overview-description">
+                Buy the <strong>{product.title} {product.info}</strong>{' '}
+                which offers you with fabulous music experience by
+                providing you with awesome sound quality that you can
+                never move on from. Enjoy perfect flexibility and
+                mobility with amazing musical quality with these
+                products giving you a truly awesome audio experience.
+                It blends with exceptional sound quality and a range
+                of smart features for an unrivalled listening
+                experience.
+              </p>
             </div>
           )}
 
+          {/* Reviews */}
           {activeTab === 'Reviews' && (
             <div className="reviews-list">
               {reviewsData.map((review) => (

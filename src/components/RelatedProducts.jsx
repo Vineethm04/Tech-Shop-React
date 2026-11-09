@@ -1,18 +1,20 @@
 import { useState } from 'react';
 import productsData from '../data/productsData';
 import { useCart } from '../Context/CartContext';
+import { useAddToCartFeedback } from '../hooks/useAddToCartFeedback';
 import './RelatedProducts.css';
 
-function RelatedProducts({ product }) {
+function RelatedProducts({ product, onProductClick }) {
   const [activeIndex, setActiveIndex] = useState(0);
+
   const { addToCart } = useCart();
+  const { handleAddToCart, isProductAdded } =
+    useAddToCartFeedback(addToCart);
 
   if (!product) {
     return null;
   }
 
-  // Include the selected product and other products
-  // from the same category, in the supplied data order.
   const relatedProducts = productsData.filter(
     (item) => item.category === product.category
   );
@@ -31,41 +33,70 @@ function RelatedProducts({ product }) {
       </h2>
 
       <div className="related-products-grid">
-        {visibleProducts.map((item) => (
-          <article className="related-product-card" key={item.id}>
-            <div className="related-product-image">
-              <img src={item.images[0]} alt={item.title} />
-            </div>
+        {visibleProducts.map((item) => {
+          const isAdded = isProductAdded(item.id);
 
-            <div className="related-product-details">
-              <div className="related-product-rating">
-                {'★'.repeat(item.rateCount)}
-                {'☆'.repeat(5 - item.rateCount)}
+          return (
+            <article
+              className="related-product-card"
+              key={item.id}
+              role="link"
+              tabIndex={0}
+              onClick={() => onProductClick(item)}
+              onKeyDown={(event) => {
+                if (
+                  event.key === 'Enter' ||
+                  event.key === ' '
+                ) {
+                  event.preventDefault();
+                  onProductClick(item);
+                }
+              }}
+              aria-label={`View details for ${item.title}`}
+              style={{ cursor: 'pointer' }}
+            >
+              <div className="related-product-image">
+                <img src={item.images[0]} alt={item.title} />
               </div>
 
-              <h3>{item.title}</h3>
+              <div className="related-product-details">
+                <div className="related-product-rating">
+                  {'★'.repeat(item.rateCount)}
+                  {'☆'.repeat(5 - item.rateCount)}
+                </div>
 
-              <p>{item.info}</p>
+                <h3>{item.title}</h3>
 
-              <div className="related-product-price">
-                <span>
-                  ₹{item.finalPrice.toLocaleString('en-IN')}
-                </span>
+                <p>{item.info}</p>
 
-                <del>
-                  ₹{item.originalPrice.toLocaleString('en-IN')}
-                </del>
+                <div className="related-product-price">
+                  <span>
+                    ₹{item.finalPrice.toLocaleString('en-IN')}
+                  </span>
+
+                  <del>
+                    ₹{item.originalPrice.toLocaleString('en-IN')}
+                  </del>
+                </div>
+
+                <button
+                  className="related-add-to-cart"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleAddToCart(item);
+                  }}
+                  style={
+                    isAdded
+                      ? { backgroundColor: '#16a34a', color: '#ffffff' }
+                      : undefined
+                  }
+                >
+                  {isAdded ? 'Added' : 'Add to cart'}
+                </button>
               </div>
-
-              <button
-                className="related-add-to-cart"
-                onClick={() => addToCart(item)}
-              >
-                Add to cart
-              </button>
-            </div>
-          </article>
-        ))}
+            </article>
+          );
+        })}
       </div>
 
       {maxIndex > 0 && (

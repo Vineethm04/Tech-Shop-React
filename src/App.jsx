@@ -19,7 +19,6 @@ function App() {
   const [showAllProducts, setShowAllProducts] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  // Scroll to the top whenever the displayed page changes.
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -67,14 +66,6 @@ function App() {
     setSelectedProduct(null);
   };
 
-  // Navigate from the empty cart to All Products.
-  const handleContinueShopping = () => {
-    setShowCart(false);
-    setShowAccount(false);
-    setShowAllProducts(true);
-    setSelectedProduct(null);
-  };
-
   return (
     <>
       <Navbar
@@ -86,11 +77,12 @@ function App() {
 
       {showCart ? (
         <Cart
-          onContinueShopping={handleContinueShopping}
+          onContinueShopping={handleBrowseAll}
         />
       ) : selectedProduct ? (
         <ProductDetails
           product={selectedProduct}
+          onProductClick={handleProductClick}
         />
       ) : showAllProducts ? (
         <AllProducts

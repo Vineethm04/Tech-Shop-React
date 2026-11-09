@@ -1,19 +1,24 @@
 import { useState } from 'react';
 import { useCart } from '../Context/CartContext';
+import { useAddToCartFeedback } from '../hooks/useAddToCartFeedback';
 import reviewsData from '../data/reviewsData';
 import { ShoppingCart, Check } from 'lucide-react';
 import RelatedProducts from './RelatedProducts';
 import './ProductDetails.css';
 
-function ProductDetails({ product }) {
+function ProductDetails({ product, onProductClick }) {
   const [activeImage, setActiveImage] = useState(0);
   const [activeTab, setActiveTab] = useState('Specifications');
 
   const { addToCart } = useCart();
+  const { handleAddToCart, isProductAdded } =
+    useAddToCartFeedback(addToCart);
 
   if (!product) {
     return null;
   }
+
+  const isAdded = isProductAdded(product.id);
 
   const savings = product.originalPrice - product.finalPrice;
 
@@ -34,8 +39,6 @@ function ProductDetails({ product }) {
   return (
     <section className="product-details-section">
       <div className="product-details-container">
-
-        {/* Product Image Gallery */}
         <div className="product-gallery">
           <div className="product-thumbnails">
             {product.images.map((image, index) => (
@@ -63,7 +66,6 @@ function ProductDetails({ product }) {
           </div>
         </div>
 
-        {/* Product Information */}
         <div className="product-information">
           <h1>{product.title}</h1>
 
@@ -82,7 +84,6 @@ function ProductDetails({ product }) {
             </span>
           </div>
 
-          {/* Price and Stock */}
           <div className="product-detail-price">
             <div className="price-values">
               <span className="current-price">
@@ -108,7 +109,6 @@ function ProductDetails({ product }) {
             (Inclusive of all taxes)
           </p>
 
-          {/* Offers */}
           <div className="product-offers">
             <h3>Offers and Discounts</h3>
 
@@ -123,20 +123,27 @@ function ProductDetails({ product }) {
             </div>
           </div>
 
-          {/* Add to Cart */}
           <div className="product-detail-actions">
             <button
               className="detail-add-to-cart"
-              onClick={() => addToCart(product)}
+              onClick={() => handleAddToCart(product)}
+              style={
+                isAdded
+                  ? { backgroundColor: '#16a34a', color: '#ffffff' }
+                  : undefined
+              }
             >
-              <ShoppingCart size={19} />
-              Add to cart
+              {isAdded ? (
+                <Check size={19} />
+              ) : (
+                <ShoppingCart size={19} />
+              )}
+              {isAdded ? 'Added' : 'Add to cart'}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Product Tabs */}
       <div className="product-tabs-section">
         <div className="product-tabs">
           {tabs.map((tab) => (
@@ -151,8 +158,6 @@ function ProductDetails({ product }) {
         </div>
 
         <div className="product-tab-content">
-
-          {/* Specifications */}
           {activeTab === 'Specifications' && (
             <div className="specifications-list">
               {specifications.map((specification) => (
@@ -167,7 +172,6 @@ function ProductDetails({ product }) {
             </div>
           )}
 
-          {/* Overview */}
           {activeTab === 'Overview' && (
             <div className="overview-content">
               <h3 className="overview-heading">
@@ -195,7 +199,6 @@ function ProductDetails({ product }) {
             </div>
           )}
 
-          {/* Reviews */}
           {activeTab === 'Reviews' && (
             <div className="reviews-list">
               {reviewsData.map((review) => (
@@ -218,7 +221,10 @@ function ProductDetails({ product }) {
         </div>
       </div>
 
-      <RelatedProducts product={product} />
+      <RelatedProducts
+        product={product}
+        onProductClick={onProductClick}
+      />
     </section>
   );
 }

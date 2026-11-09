@@ -1,16 +1,18 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState } from 'react';
 import productsData from '../data/productsData';
 import { useCart } from '../Context/CartContext';
+import { useAddToCartFeedback } from '../hooks/useAddToCartFeedback';
 import './AllProducts.css';
 
 function AllProducts({ onProductClick }) {
-  const [sortOption, setSortOption] = useState('Latest');
+  const [sortOption, setSortOption] = useState('All Products');
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [maxPrice, setMaxPrice] = useState(19990);
-  const [addedProducts, setAddedProducts] = useState([]);
 
   const { addToCart } = useCart();
+  const { handleAddToCart, isProductAdded } =
+    useAddToCartFeedback(addToCart);
 
   const brands = ['JBL', 'boAt', 'Sony'];
 
@@ -21,28 +23,13 @@ function AllProducts({ onProductClick }) {
     'Neckbands',
   ];
 
-  useEffect(() => {
-    if (addedProducts.length === 0) return;
+  const latestProductIds = [1, 2, 3, 4, 5, 6];
 
-    const timers = addedProducts.map((productId) =>
-      setTimeout(() => {
-        setAddedProducts((previous) =>
-          previous.filter((id) => id !== productId)
-        );
-      }, 3000)
-    );
-
-    return () => timers.forEach(clearTimeout);
-  }, [addedProducts]);
-
-  const handleAddToCart = (product) => {
-    addToCart(product);
-
-    setAddedProducts((previous) =>
-      previous.includes(product.id)
-        ? previous
-        : [...previous, product.id]
-    );
+  const handleClearFilters = () => {
+    setSortOption('All Products');
+    setSelectedBrands([]);
+    setSelectedCategories([]);
+    setMaxPrice(19990);
   };
 
   const handleBrandChange = (brand) => {
@@ -81,6 +68,12 @@ function AllProducts({ onProductClick }) {
     );
 
     switch (sortOption) {
+      case 'Latest':
+        products = products.filter((product) =>
+          latestProductIds.includes(product.id)
+        );
+        break;
+
       case 'Featured':
         products.sort(
           (a, b) =>
@@ -90,10 +83,8 @@ function AllProducts({ onProductClick }) {
         break;
 
       case 'Top Rated':
-        products.sort(
-          (a, b) =>
-            b.rateCount - a.rateCount ||
-            b.ratings - a.ratings
+        products = products.filter(
+          (product) => product.rateCount === 5
         );
         break;
 
@@ -124,6 +115,25 @@ function AllProducts({ onProductClick }) {
   return (
     <section className="all-products-section">
       <aside className="products-sidebar">
+
+        <button
+          className="clear-filters-button"
+          onClick={handleClearFilters}
+          style={{
+            width: '100%',
+            padding: '14px 12px',
+            marginBottom: '28px',
+            backgroundColor: '#e60000',
+            color: '#ffffff',
+            border: 'none',
+            borderRadius: '3px',
+            fontSize: '16px',
+            cursor: 'pointer',
+          }}
+        >
+          Clear Filters
+        </button>
+
         <div className="sidebar-section">
           <h3>Sort By</h3>
 
@@ -155,10 +165,7 @@ function AllProducts({ onProductClick }) {
             <h4>Brands</h4>
 
             {brands.map((brand) => (
-              <label
-                className="filter-option"
-                key={brand}
-              >
+              <label className="filter-option" key={brand}>
                 <input
                   type="checkbox"
                   checked={selectedBrands.includes(brand)}
@@ -173,10 +180,7 @@ function AllProducts({ onProductClick }) {
             <h4>Category</h4>
 
             {categories.map((category) => (
-              <label
-                className="filter-option"
-                key={category}
-              >
+              <label className="filter-option" key={category}>
                 <input
                   type="checkbox"
                   checked={selectedCategories.includes(category)}
@@ -212,7 +216,7 @@ function AllProducts({ onProductClick }) {
       <div className="all-products-grid">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => {
-            const isAdded = addedProducts.includes(product.id);
+            const isAdded = isProductAdded(product.id);
 
             return (
               <article
@@ -279,6 +283,14 @@ function AllProducts({ onProductClick }) {
                       isAdded ? 'product-added' : ''
                     }`}
                     onClick={() => handleAddToCart(product)}
+                    style={
+                      isAdded
+                        ? {
+                            backgroundColor: '#16a34a',
+                            color: '#ffffff',
+                          }
+                        : undefined
+                    }
                   >
                     {isAdded ? 'Added' : 'Add to cart'}
                   </button>

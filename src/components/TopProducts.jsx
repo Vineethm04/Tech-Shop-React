@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import productsData from '../data/productsData';
 import { useCart } from '../Context/CartContext';
+import { useAddToCartFeedback } from '../hooks/useAddToCartFeedback';
 import './TopProducts.css';
 
 function TopProducts({ onProductClick, onBrowseAll }) {
@@ -13,7 +14,10 @@ function TopProducts({ onProductClick, onBrowseAll }) {
   ];
 
   const [activeCategory, setActiveCategory] = useState('All');
+
   const { addToCart } = useCart();
+  const { handleAddToCart, isProductAdded } =
+    useAddToCartFeedback(addToCart);
 
   const topProducts = productsData.slice(0, 11);
 
@@ -43,72 +47,84 @@ function TopProducts({ onProductClick, onBrowseAll }) {
       </div>
 
       <div className="top-products-grid">
-        {filteredProducts.map((product) => (
-          <article className="product-card" key={product.id}>
-            <div
-              className="product-card-image"
-              role="button"
-              tabIndex={0}
-              onClick={() => onProductClick(product)}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                  event.preventDefault();
-                  onProductClick(product);
-                }
-              }}
-              aria-label={`View ${product.title}`}
-            >
-              <img
-                src={product.images[0]}
-                alt={product.title}
-                loading="lazy"
-              />
-            </div>
+        {filteredProducts.map((product) => {
+          const isAdded = isProductAdded(product.id);
 
-            <div className="product-card-details">
+          return (
+            <article className="product-card" key={product.id}>
               <div
-                className="product-rating"
-                aria-label={`${product.rateCount} out of 5 stars`}
-              >
-                {'★'.repeat(product.rateCount)}
-              </div>
-
-              <h3
+                className="product-card-image"
+                role="button"
+                tabIndex={0}
                 onClick={() => onProductClick(product)}
                 onKeyDown={(event) => {
-                  if (event.key === 'Enter') {
+                  if (
+                    event.key === 'Enter' ||
+                    event.key === ' '
+                  ) {
+                    event.preventDefault();
                     onProductClick(product);
                   }
                 }}
-                role="button"
-                tabIndex={0}
+                aria-label={`View ${product.title}`}
               >
-                {product.title}
-              </h3>
-
-              <p className="product-info">{product.info}</p>
-
-              <div className="product-divider"></div>
-
-              <div className="product-card-price">
-                <span>
-                  ₹{product.finalPrice.toLocaleString('en-IN')}
-                </span>
-
-                <del>
-                  ₹{product.originalPrice.toLocaleString('en-IN')}
-                </del>
+                <img
+                  src={product.images[0]}
+                  alt={product.title}
+                  loading="lazy"
+                />
               </div>
 
-              <button
-                className="add-to-cart-button"
-                onClick={() => addToCart(product)}
-              >
-                Add to cart
-              </button>
-            </div>
-          </article>
-        ))}
+              <div className="product-card-details">
+                <div
+                  className="product-rating"
+                  aria-label={`${product.rateCount} out of 5 stars`}
+                >
+                  {'★'.repeat(product.rateCount)}
+                </div>
+
+                <h3
+                  onClick={() => onProductClick(product)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      onProductClick(product);
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
+                >
+                  {product.title}
+                </h3>
+
+                <p className="product-info">{product.info}</p>
+
+                <div className="product-divider"></div>
+
+                <div className="product-card-price">
+                  <span>
+                    ₹{product.finalPrice.toLocaleString('en-IN')}
+                  </span>
+
+                  <del>
+                    ₹{product.originalPrice.toLocaleString('en-IN')}
+                  </del>
+                </div>
+
+                <button
+                  className="add-to-cart-button"
+                  onClick={() => handleAddToCart(product)}
+                  style={
+                    isAdded
+                      ? { backgroundColor: '#16a34a', color: '#ffffff' }
+                      : undefined
+                  }
+                >
+                  {isAdded ? 'Added' : 'Add to cart'}
+                </button>
+              </div>
+            </article>
+          );
+        })}
 
         {activeCategory === 'All' && (
           <button

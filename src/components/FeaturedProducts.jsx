@@ -9,7 +9,6 @@ function FeaturedProducts({ onProductClick }) {
     .map((id) => productsData.find((product) => product.id === id))
     .filter(Boolean);
 
-  // Clone two products at both ends for continuous sliding.
   const carouselProducts = [
     ...featuredProducts.slice(-2),
     ...featuredProducts,
@@ -44,7 +43,6 @@ function FeaturedProducts({ onProductClick }) {
     setActiveIndex((previous) => previous + 1);
   };
 
-  // Seamlessly reposition after reaching a cloned product.
   const handleTransitionEnd = () => {
     if (activeIndex === 7 || activeIndex === 1) {
       setTransitionEnabled(false);
@@ -52,7 +50,6 @@ function FeaturedProducts({ onProductClick }) {
     }
   };
 
-  // Re-enable animation after the invisible reposition.
   useEffect(() => {
     if (!transitionEnabled) {
       const frame = requestAnimationFrame(() => {
@@ -65,7 +62,6 @@ function FeaturedProducts({ onProductClick }) {
     }
   }, [transitionEnabled]);
 
-  // Automatic carousel movement.
   useEffect(() => {
     if (isPaused || featuredProducts.length <= 1) {
       return;
@@ -125,7 +121,10 @@ function FeaturedProducts({ onProductClick }) {
                 tabIndex={0}
                 aria-label={`View ${product.title}`}
                 onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
+                  if (
+                    event.key === 'Enter' ||
+                    event.key === ' '
+                  ) {
                     event.preventDefault();
                     onProductClick(product);
                   }

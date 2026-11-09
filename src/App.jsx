@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import Navbar from './components/Navbar';
 import HeroBanner from './components/HeroBanner';
@@ -18,6 +18,15 @@ function App() {
   const [showAccount, setShowAccount] = useState(false);
   const [showAllProducts, setShowAllProducts] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+
+  // Scroll to the top whenever the displayed page changes.
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  }, [showCart, showAllProducts, selectedProduct]);
 
   const handleCartClick = () => {
     setShowCart((previous) => !previous);

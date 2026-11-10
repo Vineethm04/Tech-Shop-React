@@ -2,6 +2,7 @@ import { useState } from 'react';
 import productsData from '../data/productsData';
 import { useCart } from '../Context/CartContext';
 import { useAddToCartFeedback } from '../hooks/useAddToCartFeedback';
+import './TopProducts.css';
 import './RelatedProducts.css';
 
 function RelatedProducts({ product, onProductClick }) {
@@ -38,38 +39,60 @@ function RelatedProducts({ product, onProductClick }) {
 
           return (
             <article
-              className="related-product-card"
+              className="product-card"
               key={item.id}
-              role="link"
-              tabIndex={0}
-              onClick={() => onProductClick(item)}
-              onKeyDown={(event) => {
-                if (
-                  event.key === 'Enter' ||
-                  event.key === ' '
-                ) {
-                  event.preventDefault();
-                  onProductClick(item);
-                }
-              }}
-              aria-label={`View details for ${item.title}`}
-              style={{ cursor: 'pointer' }}
             >
-              <div className="related-product-image">
-                <img src={item.images[0]} alt={item.title} />
+              <div
+                className="product-card-image"
+                role="button"
+                tabIndex={0}
+                onClick={() => onProductClick(item)}
+                onKeyDown={(event) => {
+                  if (
+                    event.key === 'Enter' ||
+                    event.key === ' '
+                  ) {
+                    event.preventDefault();
+                    onProductClick(item);
+                  }
+                }}
+                aria-label={`View ${item.title}`}
+              >
+                <img
+                  src={item.images[0]}
+                  alt={item.title}
+                  loading="lazy"
+                />
               </div>
 
-              <div className="related-product-details">
-                <div className="related-product-rating">
+              <div className="product-card-details">
+                <div
+                  className="product-rating"
+                  aria-label={`${item.rateCount} out of 5 stars`}
+                >
                   {'★'.repeat(item.rateCount)}
-                  {'☆'.repeat(5 - item.rateCount)}
                 </div>
 
-                <h3>{item.title}</h3>
+                <h3
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => onProductClick(item)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      onProductClick(item);
+                    }
+                  }}
+                >
+                  {item.title}
+                </h3>
 
-                <p>{item.info}</p>
+                <p className="product-info">
+                  {item.info}
+                </p>
 
-                <div className="related-product-price">
+                <div className="product-divider"></div>
+
+                <div className="product-card-price">
                   <span>
                     ₹{item.finalPrice.toLocaleString('en-IN')}
                   </span>
@@ -80,14 +103,14 @@ function RelatedProducts({ product, onProductClick }) {
                 </div>
 
                 <button
-                  className="related-add-to-cart"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    handleAddToCart(item);
-                  }}
+                  className="add-to-cart-button"
+                  onClick={() => handleAddToCart(item)}
                   style={
                     isAdded
-                      ? { backgroundColor: '#16a34a', color: '#ffffff' }
+                      ? {
+                          backgroundColor: '#16a34a',
+                          color: '#ffffff',
+                        }
                       : undefined
                   }
                 >
@@ -101,16 +124,19 @@ function RelatedProducts({ product, onProductClick }) {
 
       {maxIndex > 0 && (
         <div className="related-products-dots">
-          {Array.from({ length: maxIndex + 1 }, (_, index) => (
-            <button
-              key={index}
-              className={
-                activeIndex === index ? 'active' : ''
-              }
-              onClick={() => setActiveIndex(index)}
-              aria-label={`Show related products starting at ${index + 1}`}
-            />
-          ))}
+          {Array.from(
+            { length: maxIndex + 1 },
+            (_, index) => (
+              <button
+                key={index}
+                className={
+                  activeIndex === index ? 'active' : ''
+                }
+                onClick={() => setActiveIndex(index)}
+                aria-label={`Show related products starting at ${index + 1}`}
+              />
+            )
+          )}
         </div>
       )}
     </section>

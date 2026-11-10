@@ -10,6 +10,7 @@ import ProductDetails from './components/ProductDetails';
 import Account from './components/Account';
 import OurAdvantages from './components/OurAdvantages';
 import Footer from './components/Footer';
+import BackToTop from './components/BackToTop';
 
 import './App.css';
 
@@ -112,6 +113,8 @@ function App() {
           onClose={() => setShowAccount(false)}
         />
       )}
+
+      <BackToTop />
     </>
   );
 }

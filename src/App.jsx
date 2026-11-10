@@ -36,9 +36,6 @@ function App() {
 
   const handleAccountClick = () => {
     setShowAccount((previous) => !previous);
-    setShowCart(false);
-    setShowAllProducts(false);
-    setSelectedProduct(null);
   };
 
   const handleProductClick = (product) => {
